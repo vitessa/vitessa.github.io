@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <!-- 必须的 meta 标签 -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Liar Dice</title>
+
+        <!-- Bootstrap 的 CSS 文件 -->
+        <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-+IZRbz1B6ee9mUx/ejmonK+ulIP5A5bLDd6v6NHqXnI=" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <div class="container d-flex flex-column" style="min-height: 80vh;">
+            <div class="row justify-content-center align-items-center flex-fill">
+                <div class="col col-2">
+                    <span id="dice_a"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-1" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="1.5"/>
+                        <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                    </svg></span>
+                </div>
+                <div class="col col-2">
+                    <span id="dice_b"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-2-fill" viewBox="0 0 16 16">
+                        <path d="M0 3a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V3zm5.5 1a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zm6.5 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                    </svg></span>
+                </div>
+                <div class="col col-2">
+                    <span id="dice_c"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-3" viewBox="0 0 16 16">
+                        <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                        <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                    </svg></span>
+                </div>
+                <div class="col col-2">
+                    <span id="dice_d"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-4-fill" viewBox="0 0 16 16">
+                        <path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm1 5.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm8 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm1.5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM4 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                    </svg></span>
+                </div>
+                <div class="col col-2">
+                    <span id="dice_e"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+                        <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+                        <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                    </svg></span>
+                </div>
+                <div class="col col-10">
+                    <span id="cert" class="text-center text-uppercase text-monospace">hash</span>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center flex-fill">
+                <div class="col col-10">
+                    <button id="btn" type="button" class="btn btn-light btn-lg col-12" onclick="do_dice()" data-target="#mymodal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone-vibrate" viewBox="0 0 16 16">
+                            <path d="M10 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4zM6 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H6z"/>
+                            <path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM1.599 4.058a.5.5 0 0 1 .208.676A6.967 6.967 0 0 0 1 8c0 1.18.292 2.292.807 3.266a.5.5 0 0 1-.884.468A7.968 7.968 0 0 1 0 8c0-1.347.334-2.619.923-3.734a.5.5 0 0 1 .676-.208zm12.802 0a.5.5 0 0 1 .676.208A7.967 7.967 0 0 1 16 8a7.967 7.967 0 0 1-.923 3.734.5.5 0 0 1-.884-.468A6.967 6.967 0 0 0 15 8c0-1.18-.292-2.292-.807-3.266a.5.5 0 0 1 .208-.676zM3.057 5.534a.5.5 0 0 1 .284.648A4.986 4.986 0 0 0 3 8c0 .642.12 1.255.34 1.818a.5.5 0 1 1-.93.364A5.986 5.986 0 0 1 2 8c0-.769.145-1.505.41-2.182a.5.5 0 0 1 .647-.284zm9.886 0a.5.5 0 0 1 .648.284C13.855 6.495 14 7.231 14 8c0 .769-.145 1.505-.41 2.182a.5.5 0 0 1-.93-.364C12.88 9.255 13 8.642 13 8c0-.642-.12-1.255-.34-1.818a.5.5 0 0 1 .283-.648z"/>
+                        </svg>
+                    </button>
+                    <div class="modal bg-dark fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="mymodalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title h6" id="modal_title_6">
+                                        请选择是否开骰子
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="py-3 text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                                        </svg>
+                                        <h5 class="heading h4 mt-4">
+                                            若需开骰子，请点击继续
+                                        </h5>
+                                        <p>
+                                            开骰子后将不可复原，只能重新摇乱
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">
+                                        桥豆麻袋
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" onclick="modal_go_on()">
+                                        继续，开
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center flex-fill">
+                <div class="col col-10">
+                    <button id="btn_eye" type="button" class="btn btn-light btn-lg col-12" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="GRJrh0oydT1CwS36bBeJK/2TggpaUQC6GzTaTQdZm0k=" crossorigin="anonymous"></script>
+        <script>
+            var process = "unlock";
+            var icon_phone_vibrate = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone-vibrate" viewBox="0 0 16 16"><path d="M10 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4zM6 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H6z"/><path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM1.599 4.058a.5.5 0 0 1 .208.676A6.967 6.967 0 0 0 1 8c0 1.18.292 2.292.807 3.266a.5.5 0 0 1-.884.468A7.968 7.968 0 0 1 0 8c0-1.347.334-2.619.923-3.734a.5.5 0 0 1 .676-.208zm12.802 0a.5.5 0 0 1 .676.208A7.967 7.967 0 0 1 16 8a7.967 7.967 0 0 1-.923 3.734.5.5 0 0 1-.884-.468A6.967 6.967 0 0 0 15 8c0-1.18-.292-2.292-.807-3.266a.5.5 0 0 1 .208-.676zM3.057 5.534a.5.5 0 0 1 .284.648A4.986 4.986 0 0 0 3 8c0 .642.12 1.255.34 1.818a.5.5 0 1 1-.93.364A5.986 5.986 0 0 1 2 8c0-.769.145-1.505.41-2.182a.5.5 0 0 1 .647-.284zm9.886 0a.5.5 0 0 1 .648.284C13.855 6.495 14 7.231 14 8c0 .769-.145 1.505-.41 2.182a.5.5 0 0 1-.93-.364C12.88 9.255 13 8.642 13 8c0-.642-.12-1.255-.34-1.818a.5.5 0 0 1 .283-.648z"/></svg>'
+            var icon_search = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>'
+            var icon_dice_question = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-question-square" viewBox="0 0 16 16"><path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/><path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/></svg>'
+            var icon_dice_one = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-1" viewBox="0 0 16 16"><circle cx="8" cy="8" r="1.5"/><path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/></svg>'
+            var icon_dice_two = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-2" viewBox="0 0 16 16"><path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/><path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>'
+            var icon_dice_three = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-3" viewBox="0 0 16 16"><path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/><path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>'
+            var icon_dice_four = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-4" viewBox="0 0 16 16"><path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/><path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>'
+            var icon_dice_five = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16"><path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/><path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>'
+            var icon_dice_six = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-6" viewBox="0 0 16 16"><path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/><path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>'
+            var icon_dice_one_fill = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-1-fill" viewBox="0 0 16 16"><path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm5 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>'
+            var icon_dice_two_fill = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-2-fill" viewBox="0 0 16 16"><path d="M0 3a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V3zm5.5 1a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zm6.5 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>'
+            var icon_dice_three_fill = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-3-fill" viewBox="0 0 16 16"><path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm2.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM8 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>'
+            var icon_dice_four_fill = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-4-fill" viewBox="0 0 16 16"><path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm1 5.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm8 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm1.5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM4 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>'
+            var icon_dice_five_fill = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-5-fill" viewBox="0 0 16 16"><path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm2.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM8 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>'
+            var icon_dice_six_fill = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-dice-6-fill" viewBox="0 0 16 16"><path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm1 5.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm8 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm1.5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM12 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM4 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>'
+            var icon_dice = [icon_dice_one, icon_dice_two, icon_dice_three, icon_dice_four, icon_dice_five, icon_dice_six]
+            var icon_dice_fill = [icon_dice_one_fill, icon_dice_two_fill, icon_dice_three_fill, icon_dice_four_fill, icon_dice_five_fill, icon_dice_six_fill]
+            var dices = [1, 2, 3, 4, 5]
+            var cert = ""
+            function random_dices()
+            {
+                do {
+                    for (i = 0; i < dices.length; i ++) {
+                        dices[i] = Math.floor(Math.random() * 6) + 1;
+                    }
+                    cert = hexMD5(dices.toString())
+                    dices.sort();
+                } while(
+                    dices.toString() == [1,2,3,4,5].toString()
+                    || dices.toString() == [1,2,3,4,6].toString()
+                    || dices.toString() == [1,2,3,5,6].toString()
+                    || dices.toString() == [1,2,4,5,6].toString()
+                    || dices.toString() == [1,3,4,5,6].toString()
+                    || dices.toString() == [2,3,4,5,6].toString())
+            }
+            function show_dices()
+            {
+                var fill = 1;
+                var last = 0;
+                var ids = ["dice_a", "dice_b", "dice_c", "dice_d", "dice_e"]
+                for (i = 0; i < dices.length; i ++) {
+                    if (last != dices[i]) {
+                        if (fill == 0) {
+                            fill = 1;
+                        }
+                        else {
+                            fill = 0;
+                        }
+                        last = dices[i];
+                    }
+                    if (fill == 0) {
+                        document.getElementById(ids[i]).innerHTML = icon_dice[last - 1];
+                    }
+                    else {
+                        document.getElementById(ids[i]).innerHTML = icon_dice_fill[last - 1];
+                    }
+                }
+            }
+            function hide_dices()
+            {
+                document.getElementById("dice_a").innerHTML = icon_dice_question;
+                document.getElementById("dice_b").innerHTML = icon_dice_question;
+                document.getElementById("dice_c").innerHTML = icon_dice_question;
+                document.getElementById("dice_d").innerHTML = icon_dice_question;
+                document.getElementById("dice_e").innerHTML = icon_dice_question;
+            }
+            function do_dice()
+            {
+                if (process == "unlock") {
+                    process = "lock";
+                    document.getElementById("btn").innerHTML = icon_search;
+                    document.getElementById("btn_eye").onmouseover = show_dices;
+                    document.getElementById("btn_eye").onmouseout = hide_dices;
+                    document.getElementById("btn_eye").disabled=false;
+                    hide_dices();
+                    random_dices();
+                    document.getElementById("cert").innerHTML=cert;
+                }
+                else {
+                    document.getElementById("btn").dataset.toggle = "modal";
+                    // process = "unlock";
+                    // document.getElementById("btn").innerHTML = icon_phone_vibrate;
+                    // document.getElementById("btn_eye").onmouseover = show_dices;
+                    // document.getElementById("btn_eye").onmouseout = show_dices;
+                    // document.getElementById("btn_eye").disabled=true;
+                    // show_dices();
+                }
+            }
+            function modal_go_on()
+            {
+                process = "unlock";
+                document.getElementById("btn").dataset.toggle = null;
+                document.getElementById("btn").innerHTML = icon_phone_vibrate;
+                document.getElementById("btn_eye").onmouseover = show_dices;
+                document.getElementById("btn_eye").onmouseout = show_dices;
+                document.getElementById("btn_eye").disabled=true;
+                show_dices();
+            }
+
+            function safeAdd(x, y) {
+                var lsw = (x & 0xffff) + (y & 0xffff)
+                var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
+                return (msw << 16) | (lsw & 0xffff)
+            }
+            /**
+            * Bitwise rotate a 32-bit number to the left.
+            *
+            * @param {number} num 32-bit number
+            * @param {number} cnt Rotation count
+            * @returns {number} Rotated number
+            */
+            function bitRotateLeft(num, cnt) {
+                return (num << cnt) | (num >>> (32 - cnt))
+            }
+            /**
+             * Basic operation the algorithm uses.
+             *
+             * @param {number} q q
+             * @param {number} a a
+             * @param {number} b b
+             * @param {number} x x
+             * @param {number} s s
+             * @param {number} t t
+             * @returns {number} Result
+             */
+            function md5cmn(q, a, b, x, s, t) {
+                return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b)
+            }
+            /**
+             * Basic operation the algorithm uses.
+             *
+             * @param {number} a a
+             * @param {number} b b
+             * @param {number} c c
+             * @param {number} d d
+             * @param {number} x x
+             * @param {number} s s
+             * @param {number} t t
+             * @returns {number} Result
+             */
+            function md5ff(a, b, c, d, x, s, t) {
+                return md5cmn((b & c) | (~b & d), a, b, x, s, t)
+            }
+            /**
+             * Basic operation the algorithm uses.
+             *
+             * @param {number} a a
+             * @param {number} b b
+             * @param {number} c c
+             * @param {number} d d
+             * @param {number} x x
+             * @param {number} s s
+             * @param {number} t t
+             * @returns {number} Result
+             */
+            function md5gg(a, b, c, d, x, s, t) {
+                return md5cmn((b & d) | (c & ~d), a, b, x, s, t)
+            }
+            /**
+             * Basic operation the algorithm uses.
+             *
+             * @param {number} a a
+             * @param {number} b b
+             * @param {number} c c
+             * @param {number} d d
+             * @param {number} x x
+             * @param {number} s s
+             * @param {number} t t
+             * @returns {number} Result
+             */
+            function md5hh(a, b, c, d, x, s, t) {
+                return md5cmn(b ^ c ^ d, a, b, x, s, t)
+            }
+            /**
+             * Basic operation the algorithm uses.
+             *
+             * @param {number} a a
+             * @param {number} b b
+             * @param {number} c c
+             * @param {number} d d
+             * @param {number} x x
+             * @param {number} s s
+             * @param {number} t t
+             * @returns {number} Result
+             */
+            function md5ii(a, b, c, d, x, s, t) {
+                return md5cmn(c ^ (b | ~d), a, b, x, s, t)
+            }
+            /**
+             * Calculate the MD5 of an array of little-endian words, and a bit length.
+             *
+             * @param {Array} x Array of little-endian words
+             * @param {number} len Bit length
+             * @returns {Array<number>} MD5 Array
+             */
+            function binlMD5(x, len) {
+                /* append padding */
+                x[len >> 5] |= 0x80 << len % 32
+                x[(((len + 64) >>> 9) << 4) + 14] = len
+
+                var i
+                var olda
+                var oldb
+                var oldc
+                var oldd
+                var a = 1732584193
+                var b = -271733879
+                var c = -1732584194
+                var d = 271733878
+
+                for (i = 0; i < x.length; i += 16) {
+                    olda = a
+                    oldb = b
+                    oldc = c
+                    oldd = d
+
+                    a = md5ff(a, b, c, d, x[i], 7, -680876936)
+                    d = md5ff(d, a, b, c, x[i + 1], 12, -389564586)
+                    c = md5ff(c, d, a, b, x[i + 2], 17, 606105819)
+                    b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330)
+                    a = md5ff(a, b, c, d, x[i + 4], 7, -176418897)
+                    d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426)
+                    c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341)
+                    b = md5ff(b, c, d, a, x[i + 7], 22, -45705983)
+                    a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416)
+                    d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417)
+                    c = md5ff(c, d, a, b, x[i + 10], 17, -42063)
+                    b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162)
+                    a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682)
+                    d = md5ff(d, a, b, c, x[i + 13], 12, -40341101)
+                    c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290)
+                    b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329)
+
+                    a = md5gg(a, b, c, d, x[i + 1], 5, -165796510)
+                    d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632)
+                    c = md5gg(c, d, a, b, x[i + 11], 14, 643717713)
+                    b = md5gg(b, c, d, a, x[i], 20, -373897302)
+                    a = md5gg(a, b, c, d, x[i + 5], 5, -701558691)
+                    d = md5gg(d, a, b, c, x[i + 10], 9, 38016083)
+                    c = md5gg(c, d, a, b, x[i + 15], 14, -660478335)
+                    b = md5gg(b, c, d, a, x[i + 4], 20, -405537848)
+                    a = md5gg(a, b, c, d, x[i + 9], 5, 568446438)
+                    d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690)
+                    c = md5gg(c, d, a, b, x[i + 3], 14, -187363961)
+                    b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501)
+                    a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467)
+                    d = md5gg(d, a, b, c, x[i + 2], 9, -51403784)
+                    c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473)
+                    b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734)
+
+                    a = md5hh(a, b, c, d, x[i + 5], 4, -378558)
+                    d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463)
+                    c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562)
+                    b = md5hh(b, c, d, a, x[i + 14], 23, -35309556)
+                    a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060)
+                    d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353)
+                    c = md5hh(c, d, a, b, x[i + 7], 16, -155497632)
+                    b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640)
+                    a = md5hh(a, b, c, d, x[i + 13], 4, 681279174)
+                    d = md5hh(d, a, b, c, x[i], 11, -358537222)
+                    c = md5hh(c, d, a, b, x[i + 3], 16, -722521979)
+                    b = md5hh(b, c, d, a, x[i + 6], 23, 76029189)
+                    a = md5hh(a, b, c, d, x[i + 9], 4, -640364487)
+                    d = md5hh(d, a, b, c, x[i + 12], 11, -421815835)
+                    c = md5hh(c, d, a, b, x[i + 15], 16, 530742520)
+                    b = md5hh(b, c, d, a, x[i + 2], 23, -995338651)
+
+                    a = md5ii(a, b, c, d, x[i], 6, -198630844)
+                    d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415)
+                    c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905)
+                    b = md5ii(b, c, d, a, x[i + 5], 21, -57434055)
+                    a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571)
+                    d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606)
+                    c = md5ii(c, d, a, b, x[i + 10], 15, -1051523)
+                    b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799)
+                    a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359)
+                    d = md5ii(d, a, b, c, x[i + 15], 10, -30611744)
+                    c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380)
+                    b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649)
+                    a = md5ii(a, b, c, d, x[i + 4], 6, -145523070)
+                    d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379)
+                    c = md5ii(c, d, a, b, x[i + 2], 15, 718787259)
+                    b = md5ii(b, c, d, a, x[i + 9], 21, -343485551)
+
+                    a = safeAdd(a, olda)
+                    b = safeAdd(b, oldb)
+                    c = safeAdd(c, oldc)
+                    d = safeAdd(d, oldd)
+                }
+                return [a, b, c, d]
+            }
+            /**
+             * Convert an array of little-endian words to a string
+             *
+             * @param {Array<number>} input MD5 Array
+             * @returns {string} MD5 string
+             */
+            function binl2rstr(input) {
+                var i
+                var output = ''
+                var length32 = input.length * 32
+                for (i = 0; i < length32; i += 8) {
+                    output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff)
+                }
+                return output
+            }
+            /**
+             * Convert a raw string to an array of little-endian words
+             * Characters >255 have their high-byte silently ignored.
+             *
+             * @param {string} input Raw input string
+             * @returns {Array<number>} Array of little-endian words
+             */
+            function rstr2binl(input) {
+                var i
+                var output = []
+                output[(input.length >> 2) - 1] = undefined
+                for (i = 0; i < output.length; i += 1) {
+                    output[i] = 0
+                }
+                var length8 = input.length * 8
+                for (i = 0; i < length8; i += 8) {
+                    output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32
+                }
+                return output
+            }
+            function rstrMD5(s) {
+                return binl2rstr(binlMD5(rstr2binl(s), s.length * 8))
+            }
+            function rstr2hex(input) {
+                var hexTab = '0123456789abcdef'
+                var output = ''
+                var x
+                var i
+                for (i = 0; i < input.length; i += 1) {
+                    x = input.charCodeAt(i)
+                    output += hexTab.charAt((x >>> 4) & 0x0f) + hexTab.charAt(x & 0x0f)
+                }
+                return output
+            }
+            function str2rstrUTF8(input) {
+                return unescape(encodeURIComponent(input))
+            }
+            function rawMD5(s) {
+                return rstrMD5(str2rstrUTF8(s))
+            }
+            function hexMD5(s) {
+                return rstr2hex(rawMD5(s))
+            }
+        </script>
+    </body>
+
+</html>
